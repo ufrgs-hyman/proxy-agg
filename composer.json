@@ -23,6 +23,7 @@
     "scripts": {
         "post-create-project-cmd": [
             "yii\\composer\\Installer::postCreateProject",
+            "php yii migrate --interactive=0",
             "php yii crontab/start"
         ]
     },
