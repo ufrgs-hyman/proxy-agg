@@ -12,7 +12,7 @@ sudo apt-get update
 sudo apt-get install -y apache2 mysql-server php5 curl php5-mysql php5-curl phpmyadmin
 sudo ln -s /usr/share/phpmyadmin /var/www/phpmyadmin
 echo "Creating database. Please, type the password of the MySQL root user:"
-mysqladmin -u root -p create meican2
+mysqladmin -u root -p create proxy
 sudo a2enmod rewrite
 read -n1 -r -p "Please, in the next step confirm the database settings. Press any key to continue." key
 nano config/db.php

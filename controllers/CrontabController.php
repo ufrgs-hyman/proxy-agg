@@ -11,21 +11,21 @@ class CrontabController extends Controller {
     
     public function beforeAction($action) {
         if (parent::beforeAction($action)) {
-            return Yii::$app->id == "meican-console";
+            return Yii::$app->id == "mqg-proxy-agg-console";
         } else {
             return false;
         }
     }
 
     private function getExecutionPath($taskId) {
-        return Yii::$app->basePath."/yii init/service/crontab/task ".$taskId;
+        return Yii::$app->basePath."/yii crontab/task ".$taskId;
     }
     
     public function actionStart() {
         $crontab = new CrontabManager();
         $job = $crontab->newJob();
         $job->on('* * * * *');
-        $job->doJob(Yii::$app->basePath."/yii init/service/crontab/listener");
+        $job->doJob(Yii::$app->basePath."/yii crontab/listener");
         $crontab->add($job);
         $crontab->save(false);
         echo "MEICAN Crontab Service Started\n";
