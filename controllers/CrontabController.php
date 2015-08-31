@@ -28,7 +28,7 @@ class CrontabController extends Controller {
         $job->doJob(Yii::$app->basePath."/yii crontab/listener");
         $crontab->add($job);
         $crontab->save(false);
-        echo "MEICAN Crontab Service Started\n";
+        echo "Crontab Service Started\n";
     }
     
     public function actionStop() {
@@ -39,7 +39,7 @@ class CrontabController extends Controller {
         $crontab->add($job);
         $crontab->save(false);
         $this->delete($job->id);
-        echo "MEICAN Crontab Service Stopped\n";
+        echo "Crontab Service Stopped\n";
     }
     
     public function actionListener() {
