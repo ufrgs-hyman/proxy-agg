@@ -9,7 +9,7 @@ return [
     'id' => 'mqg-proxy-agg-console',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log', 'gii'],
-    'controllerNamespace' => 'app\commands',
+    'controllerNamespace' => 'app\controllers',
     'modules' => [
         'gii' => 'yii\gii\Module',
     ],
