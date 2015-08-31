@@ -1,0 +1,47 @@
+{
+    "name": "mqg-proxy-agg",
+    "description": "MQG Proxy Aggregator",
+    "keywords": ["proxy", "aggregator", "nsi", "topology", "nmwg"],
+    "homepage": "https://github.com/ufrgs-hyman/proxy-agg",
+    "type": "project",
+    "license": "MIT-License",
+    "support": {
+        "wiki": "https://github.com/ufrgs-hyman/proxy-agg"
+    },
+    "minimum-stability": "stable",
+    "require": {
+        "php": ">=5.5.0",
+        "yiisoft/yii2": "2.0.6"
+    },
+    "require-dev": {
+        "yiisoft/yii2-debug": "*",
+        "yiisoft/yii2-gii": "*"
+    },
+    "config": {
+        "process-timeout": 1800
+    },
+    "scripts": {
+        "post-create-project-cmd": [
+            "yii\\composer\\Installer::postCreateProject",
+            "php yii crontab/start"
+        ]
+    },
+    "extra": {
+        "yii\\composer\\Installer::postCreateProject": {
+            "setPermission": [
+                {
+                    "runtime": "0777",
+                    "web/assets": "0777",
+                    "yii": "0755"
+                }
+            ],
+            "generateCookieValidationKey": [
+                "config/web.php" 
+            ]
+        },
+        "asset-installer-paths": {
+            "npm-asset-library": "vendor/npm",
+            "bower-asset-library": "vendor/bower"
+        }
+    }
+}
