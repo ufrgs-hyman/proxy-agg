@@ -32,7 +32,7 @@ class TopologyController extends Controller {
     }
     
     public function actionNmwg() {
-    	$topology = new NMWGProxy("http://localhost/nmwgrnpfull.xml");
+    	$topology = new NMWGProxy(Yii::$app->params['source.nmwg']);
     	$topology->loadFile();
     	return $topology->xml->saveXML();
     }

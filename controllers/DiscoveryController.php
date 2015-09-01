@@ -13,7 +13,7 @@ class DiscoveryController extends Controller {
     
     public function actionIndex() {
     	$proxy = new NSIProxy;
-    	$proxy->loadFile('https://agg.cipo.rnp.br/dds');
+    	$proxy->loadFile(Yii::$app->params['source.discovery']);
     	$proxy->updateLocalProvider();
     	$proxy->parseTopology();
 		return $proxy->xml->saveXML();
