@@ -119,21 +119,8 @@ class DiscoveryController extends Controller {
     		'</tns:notification>'.
     		'</tns:notifications>';
     	
-    	/*$proxy = new NSIProxy;
-    	$proxy->loadFile('https://agg.cipo.rnp.br/dds/documents?id=urn:ogf:network:es.net:2013:');
-    	$proxy->parseTopology();
-    	
-    	$message .= '<tns:notification>'.
-    		'<discovered>none</discovered>'.
-    		'<event>Update</event>'.
-    		$proxy->xml->saveHTML().
-    		'</tns:notification>'.
-    		'</tns:notifications>';*/
-    	
     	$xml = new \DOMDocument();
     	$xml->loadXML($message);
-    	
-    	Yii::trace($message);
     	
     	$ch = curl_init();
     	
@@ -143,12 +130,14 @@ class DiscoveryController extends Controller {
     			$subXml->setAttribute('id', $sub['id']);
     		}
     		
+    		Yii::trace($xml->saveXML());
+    		
     		$options = array(
     			CURLOPT_RETURNTRANSFER => true,
     			CURLOPT_SSL_VERIFYHOST => false,
     			CURLOPT_SSL_VERIFYPEER => false,
     			CURLOPT_POST 			=> 1,
-    			CURLOPT_POSTFIELDS 	=> $message,
+    			CURLOPT_POSTFIELDS 	=> $xml->saveXML(),
     			CURLOPT_HTTPHEADER => array(
     				'Accept-encoding: application/xml;charset=utf-8',
     				'Content-Type: application/xml;charset=utf-8'),
