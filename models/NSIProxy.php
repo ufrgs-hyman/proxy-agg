@@ -355,14 +355,16 @@ class NSIProxy {
 			
 			$interface = $nsaNode->appendChild($this->xml->createElement('interface'));
 			$type = $interface->appendChild($this->xml->createElement('type'));
-			$type->appendChild($this->xml->createTextNode('application/vnd.ogf.nsi.topology.v2+xml'));
+			$type->appendChild($this->xml->createTextNode('application/vnd.ogf.nsi.dds.v1+xml'));
 			$url = $interface->appendChild($this->xml->createElement('href'));
-			$url->appendChild($this->xml->createTextNode('http://143.54.12.80/proxyagg/web/topology/nsi'));
+			$url->appendChild($this->xml->createTextNode('http://'.
+					Yii::$app->params['host'].'/discovery'));
 			$interface = $nsaNode->appendChild($this->xml->createElement('interface'));
 			$type = $interface->appendChild($this->xml->createElement('type'));
 			$type->appendChild($this->xml->createTextNode('application/nmwg.topology+xml'));
 			$url = $interface->appendChild($this->xml->createElement('href'));
-			$url->appendChild($this->xml->createTextNode('http://143.54.12.80/proxyagg/web/topology/nmwg'));
+			$url->appendChild($this->xml->createTextNode('http://'.
+					Yii::$app->params['host'].'/topology/nmwg'));
 			
 			$peerNodes = $this->xpath->query(".//peersWith", $nsaNode);
 			foreach ($peerNodes as $peerNode) {
