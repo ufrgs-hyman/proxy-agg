@@ -21,10 +21,9 @@
         "process-timeout": 1800
     },
     "scripts": {
-        "post-create-project-cmd": [
+        "post-install-cmd": [
             "yii\\composer\\Installer::postCreateProject",
-            "php yii migrate --interactive=0",
-            "php yii crontab/start"
+            "php yii migrate --interactive=0"
         ]
     },
     "extra": {
