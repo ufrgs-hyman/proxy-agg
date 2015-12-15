@@ -16,6 +16,7 @@ class DiscoveryController extends Controller {
     	$proxy->loadFile(Yii::$app->params['source.discovery']);
     	$proxy->updateLocalProvider();
     	$proxy->parseTopology();
+    	Yii::$app->response->format = \yii\web\Response::FORMAT_RAW;
 		return $proxy->xml->saveXML();
     }  
     					
