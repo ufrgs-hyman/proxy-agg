@@ -384,7 +384,7 @@ class NSIProxy {
 			$type = $interface->appendChild($this->xml->createElement('type'));
 			$type->appendChild($this->xml->createTextNode('application/vnd.ogf.nsi.dds.v1+xml'));
 			$url = $interface->appendChild($this->xml->createElement('href'));
-			$url->appendChild($this->xml->createTextNode(Url::toRoute(["discovery"], true)));
+			$url->appendChild($this->xml->createTextNode(Url::toRoute(["/discovery"], true)));
 			$interface = $nsaNode->appendChild($this->xml->createElement('interface'));
 			$type = $interface->appendChild($this->xml->createElement('type'));
 			$type->appendChild($this->xml->createTextNode('application/nmwg.topology+xml'));
