@@ -2,6 +2,7 @@
 
 namespace app\models;
 use Yii;
+use yii\helpers\Url;
 
 class NSIProxy {
 
@@ -14,11 +15,44 @@ class NSIProxy {
 		$this->xml = new \DOMDocument();
 		$this->xml->loadXML($input);
 		$this->xpath = new \DOMXpath($this->xml);
+		$this->decodeGz64();
 	}
 	
 	function parseTopology() {
 		$this->parseDomains();
 		$this->parseProviders();
+	}
+	
+	function decodeGz64() {
+		$contentNodes = $this->xpath->query("//content");
+	
+		foreach ($contentNodes as $contentNode) {
+			if($contentNode->getAttribute("contentType") == "application/x-gzip" &&
+				$contentNode->getAttribute('contentTransferEncoding') == "base64") {
+				$contentDOM = new \DOMDocument();
+				$contentDOM->loadXML(gzdecode(base64_decode($contentNode->nodeValue)));
+				$xmlns = "http://schemas.ogf.org/nml/2013/05/base#";
+				$tagName = "Topology";
+				foreach ($contentDOM->getElementsByTagNameNS($xmlns, $tagName)
+						as $netNode) {
+					$node = $this->xml->importNode($netNode, true);
+					$contentNode->nodeValue = "";
+					$contentNode->removeAttribute("contentType");
+					$contentNode->removeAttribute('contentTransferEncoding');
+					$contentNode->appendChild($node);
+				}
+				$xmlns = "http://schemas.ogf.org/nsi/2014/02/discovery/nsa";
+				$tagName = "nsa";
+				foreach ($contentDOM->getElementsByTagNameNS($xmlns, $tagName)
+						as $nsaNode) {
+					$node = $this->xml->importNode($nsaNode, true);
+					$contentNode->nodeValue = "";
+					$contentNode->removeAttribute("contentType");
+					$contentNode->removeAttribute('contentTransferEncoding');
+					$contentNode->appendChild($node);
+				}
+	 		}
+		}
 	}
 
 	function loadFile($url) {
@@ -324,21 +358,14 @@ class NSIProxy {
 		    break;
 		}
 		
-		$nsaPrefix = null;
-		
-		foreach ($this->xml->getElementsByTagNameNS("http://schemas.ogf.org/nsi/2014/02/discovery/nsa",
-				'nsa') as $nsaNode) {
-			$nsaPrefix = $nsaNode->prefix;
-			break;
-		}
-		
-		$nsaNodes = $this->xpath->query(".//".$nsaPrefix.":nsa", $docNode);
+		$this->xpath->registerNamespace('x', 'http://schemas.ogf.org/nsi/2014/02/discovery/nsa');
+		$nsaNodes = $this->xpath->query(".//x:nsa", $docNode);
 		foreach ($nsaNodes as $nsaNode) {
 			$nsaNode->setAttribute('id', 'urn:ogf:network:ufrgs.br:2015:nsa:proxy');
 			$nameNode = $this->xpath->query(".//name", $nsaNode);
 			if ($nameNode->item(0)) $nameNode->item(0)->nodeValue = "Proxy Aggregator";
 			$versionNode = $this->xpath->query(".//softwareVersion", $nsaNode);
-			if ($versionNode->item(0)) $versionNode->item(0)->nodeValue = "1.0.0";
+			if ($versionNode->item(0)) $versionNode->item(0)->nodeValue = "1.1";
 			$adminNode = $this->xpath->query(".//adminContact", $nsaNode);
 			if ($adminNode->item(0)) $adminNode->item(0)->removeChild($adminNode->item(0)->firstChild);
 			
@@ -357,14 +384,12 @@ class NSIProxy {
 			$type = $interface->appendChild($this->xml->createElement('type'));
 			$type->appendChild($this->xml->createTextNode('application/vnd.ogf.nsi.dds.v1+xml'));
 			$url = $interface->appendChild($this->xml->createElement('href'));
-			$url->appendChild($this->xml->createTextNode('http://'.
-					Yii::$app->params['host'].'/discovery'));
+			$url->appendChild($this->xml->createTextNode(Url::toRoute(["discovery"], true)));
 			$interface = $nsaNode->appendChild($this->xml->createElement('interface'));
 			$type = $interface->appendChild($this->xml->createElement('type'));
 			$type->appendChild($this->xml->createTextNode('application/nmwg.topology+xml'));
 			$url = $interface->appendChild($this->xml->createElement('href'));
-			$url->appendChild($this->xml->createTextNode('http://'.
-					Yii::$app->params['host'].'/topology/nmwg'));
+			$url->appendChild($this->xml->createTextNode(Url::toRoute(["topology/nmwg"], true)));
 			
 			$peerNodes = $this->xpath->query(".//peersWith", $nsaNode);
 			foreach ($peerNodes as $peerNode) {
