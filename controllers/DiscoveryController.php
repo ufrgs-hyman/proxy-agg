@@ -14,7 +14,7 @@ class DiscoveryController extends Controller {
     public function actionIndex() {
     	$proxy = new NSIProxy;
     	$proxy->loadFile(Yii::$app->params['source.discovery']);
-    	$proxy->updateLocalProvider();
+    	//$proxy->updateLocalProvider();
     	$proxy->parseTopology();
     	Yii::$app->response->format = \yii\web\Response::FORMAT_RAW;
 		return $proxy->xml->saveXML();

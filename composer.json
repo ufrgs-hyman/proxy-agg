@@ -1,6 +1,6 @@
 {
-    "name": "mqg-proxy-agg",
-    "description": "MQG Proxy Aggregator",
+    "name": "ufrgs-hyman/proxy-agg",
+    "description": "Proxy Aggregator",
     "keywords": ["proxy", "aggregator", "nsi", "topology", "nmwg"],
     "homepage": "https://github.com/ufrgs-hyman/proxy-agg",
     "type": "project",
