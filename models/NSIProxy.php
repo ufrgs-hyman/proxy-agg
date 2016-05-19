@@ -275,15 +275,16 @@ class NSIProxy {
 		$relation->setAttribute("type", "http://schemas.ogf.org/nml/2013/05/base#hasInboundPort");
 		$relation = $deviceNode->appendChild($this->xml->createElementNS('http://schemas.ogf.org/nml/2013/05/base#', 'Relation'));
 		$relation->setAttribute("type", "http://schemas.ogf.org/nml/2013/05/base#hasOutboundPort");
-		$dev = Device::findOneByDomainAndNode($domainName, $deviceName);
+
+		$location = Device::findLocation($domainName, $deviceName);
 		if($dev) {
-			$location = $deviceNode->appendChild($this->xml->createElement('location'));
-			$lat = $location->appendChild($this->xml->createElement('latitude'));
-			$lat->appendChild($this->xml->createTextNode($dev['lat']));
-			$lng = $location->appendChild($this->xml->createElement('longitude'));
-			$lng->appendChild($this->xml->createTextNode($dev['lng']));
-			$address = $location->appendChild($this->xml->createElement('address'));
-			$address->appendChild($this->xml->createTextNode(urlencode($dev['address'])));
+			$locationNode = $deviceNode->appendChild($this->xml->createElement('location'));
+			$lat = $locationNode->appendChild($this->xml->createElement('latitude'));
+			$lat->appendChild($this->xml->createTextNode($location['lat']));
+			$lng = $locationNode->appendChild($this->xml->createElement('longitude'));
+			$lng->appendChild($this->xml->createTextNode($location['lng']));
+			$address = $locationNode->appendChild($this->xml->createElement('address'));
+			$address->appendChild($this->xml->createTextNode(urlencode($location['address'])));
 		}
 		
 		$relationNodes = $this->xpath->query(".//x:Relation", $deviceNode);
