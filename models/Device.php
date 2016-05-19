@@ -72,5 +72,6 @@ class Device extends \yii\db\ActiveRecord
             $dev['lat'] = $dom['lat'];
             $dev['lng'] = $dom['lng'];
         }
+        return $dev;
     }
 }
