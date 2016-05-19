@@ -277,7 +277,7 @@ class NSIProxy {
 		$relation->setAttribute("type", "http://schemas.ogf.org/nml/2013/05/base#hasOutboundPort");
 
 		$location = Device::findLocation($domainName, $deviceName);
-		if($dev) {
+		if($location) {
 			$locationNode = $deviceNode->appendChild($this->xml->createElement('location'));
 			$lat = $locationNode->appendChild($this->xml->createElement('latitude'));
 			$lat->appendChild($this->xml->createTextNode($location['lat']));
