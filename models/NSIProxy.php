@@ -187,13 +187,13 @@ class NSIProxy {
 					$i++;
 				}
 				
-				$location = $netNode->appendChild($this->xml->createElement('location'));
+				/*$location = $netNode->appendChild($this->xml->createElement('location'));
 				$lat = $location->appendChild($this->xml->createElement('latitude'));
 				$lat->appendChild($this->xml->createTextNode($geo['lat']));
 				$lng = $location->appendChild($this->xml->createElement('longitude'));
 				$lng->appendChild($this->xml->createTextNode($geo['lng']));
 				$address = $location->appendChild($this->xml->createElement('address'));
-				$address->appendChild($this->xml->createTextNode(urlencode($geo['address'])));
+				$address->appendChild($this->xml->createTextNode(urlencode($geo['address'])));*/
 				
 				$this->parsePorts($netNode, $netId);
 			}

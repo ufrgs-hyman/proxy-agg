@@ -65,7 +65,12 @@ class Device extends \yii\db\ActiveRecord
     }
     
     static function findOneByDomainAndNode($domainName, $deviceName) {
-    	return self::find()->where(
+    	$dev = self::find()->where(
 						['domain'=>$domainName,'node'=>$deviceName])->asArray()->one();
+        if ($dev['lat'] == null) {
+            $dom = Domain::find()->where(['name'=>$domainName])->asArray()->one();
+            $dev['lat'] = $dom['lat'];
+            $dev['lng'] = $dom['lng'];
+        }
     }
 }
